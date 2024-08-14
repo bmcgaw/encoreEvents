@@ -1,7 +1,7 @@
 :root {
   --primary-color: rgb(0, 30, 67);
-  --secondary-color: rgb(255, 153, 59);
-  --secondary-color-alpha: rgba(255, 153, 59, 0.4);
+  --secondary-color: rgb(25, 213, 59);
+  --secondary-color-alpha: rgba(2, 153, 2, 0.4);
   --dark-color: rgb(36, 36, 36);
   --white-color: rgb(223, 227, 228);
 }
@@ -27,6 +27,10 @@ h4,
 h5,
 h6 {
   color: var(--primary-color);
+}
+
+a {
+  cursor: pointer;
 }
 
 .accordion-button {
