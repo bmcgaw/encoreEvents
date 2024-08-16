@@ -64,18 +64,15 @@ const events = [
   },
 ];
 
-// buildDropDown
-// Creates the dropdown of cities to select from
-// Take in either the events data or the data from local storage if there is any
-// Parse through it and create an array of cities
-// Loop through the cities and for each city create a dropdown item with the city name only use each city once
 function buildDropDown() {
   let eventDropDown = document.getElementById("eventDropDown");
   let template = document.getElementById("cityDropDown-template");
 
+  // Retrieve event data and create array of distinct cities
   const eventData = JSON.parse(localStorage.getItem("eventData")) || events;
   const eventCities = [...new Set(eventData.map((item) => item.city))];
 
+  // Create dropdown option for All
   let ddItemNode = document.importNode(template.content, true);
 
   ddItem = ddItemNode.querySelector("a");
@@ -83,6 +80,7 @@ function buildDropDown() {
   ddItem.textContent = "All";
   eventDropDown.appendChild(ddItem);
 
+  // Create dropdown option for each city
   for (let i = 0; i < eventCities.length; i++) {
     let ddItemNode = document.importNode(template.content, true);
     ddItem = ddItemNode.querySelector("a");
@@ -90,33 +88,53 @@ function buildDropDown() {
     ddItem.textContent = eventCities[i];
     eventDropDown.appendChild(ddItem);
   }
+
+  // By default display data for all cities
+  displayStats(eventData);
 }
 
 function getEvents(element) {
-  // If element.textContent = All then go through the entire array of objects
-  // Otherwise only the ones that have the specific city
-  // Track the total attendance
-  // Average attendance
-  // Most attended
-  // Least attended
-  const eventData = JSON.parse(localStorage.getItem("eventData")) || events;
-  let displayData = "";
+  // Retrieve event data
+  const allEvents = JSON.parse(localStorage.getItem("eventData")) || events;
 
-  if (element.textContent != "All") {
-    displayData = eventData.filter((item) => item.city == element.textContent);
+  let filteredEvents = "";
+  let city = element.getAttribute("data-string");
+
+  // Filter data and display table header based on selected city
+  if (city != "All") {
+    filteredEvents = allEvents.filter((item) => item.city == city);
   } else {
-    displayData = eventData;
+    filteredEvents = allEvents;
   }
 
+  document.getElementById("statsHeader").innerText = `Stats For ${city} Events`;
+
+  // Call method to display the events using the filtered data
+  displayStats(filteredEvents);
+}
+
+function displayStats(events) {
+  // Initialize stats variables
   let totalAttendance = 0;
   let averageAttendance = 0;
-  let mostAttended = displayData[0].attendance;
-  let leastAttended = displayData[0].attendance;
+  let mostAttended = events[0].attendance;
+  let leastAttended = events[0].attendance;
 
-  for (let i = 0; i < displayData.length; i++) {
-    totalAttendance += displayData[i].attendance;
-    mostAttended = Math.max(displayData[i].attendance, mostAttended);
-    leastAttended = Math.min(displayData[i].attendance, leastAttended);
+  // Add logic to set values of stat variables by looping over events
+  for (let i = 0; i < events.length; i++) {
+    totalAttendance += events[i].attendance;
+    mostAttended = Math.max(events[i].attendance, mostAttended);
+    leastAttended = Math.min(events[i].attendance, leastAttended);
   }
-  averageAttendance = Math.floor(totalAttendance / displayData.length);
+  averageAttendance = Math.floor(totalAttendance / events.length);
+
+  // Add values to the table
+  document.getElementById("total").innerHTML = totalAttendance.toLocaleString();
+  document.getElementById("most").innerHTML = mostAttended.toLocaleString();
+  document.getElementById("least").innerHTML = leastAttended.toLocaleString();
+  document.getElementById("average").innerHTML =
+    averageAttendance.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
 }
