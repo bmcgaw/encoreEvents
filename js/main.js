@@ -42,21 +42,21 @@ const events = [
     date: "02/14/2024",
   },
   {
-    event: "Brian Regan",
+    event: "Maroon 5",
     city: "Charlotte",
     state: "North Carolina",
     attendance: 400000,
     date: "06/01/2019",
   },
   {
-    event: "Jerry Seinfeld",
+    event: "Taylor Swift",
     city: "Charlotte",
     state: "North Carolina",
     attendance: 45000,
     date: "10/31/2022",
   },
   {
-    event: "Jim Gaffigan",
+    event: "Rihanna",
     city: "Charlotte",
     state: "North Carolina",
     attendance: 50000,
@@ -91,6 +91,9 @@ function buildDropDown() {
 
   // By default display data for all cities
   displayStats(eventData);
+
+  // Display all data in bottom table
+  displayData();
 }
 
 function getEvents(element) {
@@ -107,6 +110,7 @@ function getEvents(element) {
     filteredEvents = allEvents;
   }
 
+  // Adjust stats header to match selected city
   document.getElementById("statsHeader").innerText = `Stats For ${city} Events`;
 
   // Call method to display the events using the filtered data
@@ -120,7 +124,7 @@ function displayStats(events) {
   let mostAttended = events[0].attendance;
   let leastAttended = events[0].attendance;
 
-  // Add logic to set values of stat variables by looping over events
+  // Add logic to set values of stats variables by looping over events
   for (let i = 0; i < events.length; i++) {
     totalAttendance += events[i].attendance;
     mostAttended = Math.max(events[i].attendance, mostAttended);
@@ -137,4 +141,64 @@ function displayStats(events) {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     });
+}
+
+function displayData() {
+  let eventBody = document.getElementById("eventBody");
+  let template = document.getElementById("eventData-template");
+
+  eventBody.innerHTML = "";
+
+  // Retrieve event data
+  let curEvents = JSON.parse(localStorage.getItem("eventData")) || [];
+
+  if (curEvents.length == 0) {
+    curEvents = events;
+    localStorage.setItem("eventData", JSON.stringify(curEvents));
+  }
+
+  // Populate a row of data for each event
+  for (let i = 0; i < curEvents.length; i++) {
+    let eventItemsNode = document.importNode(template.content, true);
+    let eventCols = eventItemsNode.querySelectorAll("td");
+
+    eventCols[0].textContent = curEvents[i].event;
+    eventCols[1].textContent = curEvents[i].city;
+    eventCols[2].textContent = curEvents[i].state;
+    eventCols[3].textContent = curEvents[i].attendance;
+    eventCols[4].textContent = new Date(curEvents[i].date).toLocaleDateString();
+
+    // Add that data to the event table
+    eventBody.appendChild(eventItemsNode);
+  }
+}
+
+function saveEventData() {
+  // Retrieve event data
+  let curEvents = JSON.parse(localStorage.getItem("eventData")) || [];
+
+  // Create a new event and add values based on user's form input
+  let newEvent = {};
+
+  newEvent["event"] = document.getElementById("newEventName").value;
+  newEvent["city"] = document.getElementById("newEventCity").value;
+  let state = document.getElementById("newEventState");
+  newEvent["state"] = state.options[state.selectedIndex].text;
+  newEvent["attendance"] = parseInt(
+    document.getElementById("newEventAttendance").value,
+    10
+  );
+  let eventDate = document.getElementById("newEventDate").value;
+  let eventDate2 = `${eventDate} 00:00`;
+  newEvent["date"] = new Date(eventDate2).toLocaleDateString();
+
+  // Add new event to current event data
+  curEvents.push(newEvent);
+
+  // Save data to local storage
+  localStorage.setItem("eventData", JSON.stringify(curEvents));
+
+  // Build the drop down and display the data again with the new data included
+  buildDropDown();
+  displayData();
 }
