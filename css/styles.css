@@ -1,15 +1,16 @@
 :root {
-  --primary-color: rgb(0, 30, 67);
-  --secondary-color: rgb(25, 213, 59);
-  --secondary-color-alpha: rgba(2, 153, 2, 0.4);
-  --dark-color: rgb(36, 36, 36);
-  --white-color: rgb(223, 227, 228);
+  --primary-color: #173b45;
+  --secondary-color: #ff8225;
+  --secondary-color-alpha: #b43f3f;
+  --dark-color: #173b45;
+  --white-color: #eeeeee;
 }
 
 body {
   color: var(--dark-color);
   padding-top: 90px;
   padding-bottom: 80px;
+  background-color: var(--white-color);
 }
 
 nav {
@@ -46,7 +47,7 @@ a {
 }
 
 .accordion-button:hover {
-  background-color: rgb(224, 241, 255);
+  background-color: goldenrod;
 }
 
 .accordion-button:focus,
@@ -73,16 +74,6 @@ main > .container {
 
 footer {
   padding-right: 1rem;
-}
-
-footer .social > a {
-  color: var(--white-color);
-  opacity: 0.75;
-}
-
-footer .social > a:hover {
-  opacity: 0.9;
-  color: var(--secondary-color);
 }
 
 .bsicon {
@@ -112,30 +103,6 @@ pre[class*="language-"] {
   word-wrap: break-word;
 }
 
-/* -- Style the CTA on the app page ---*/
-.cta {
-  background-color: var(--dark-color);
-  color: var(--white-color);
-}
-
-.cta h4 {
-  color: var(--white-color);
-}
-
-.cta h6 {
-  color: var(--white-color);
-}
-
-.cta a {
-  color: var(--secondary-color);
-  text-decoration: none;
-}
-
-.cta a:hover {
-  font-weight: bolder;
-  text-decoration: underline;
-}
-
 #encore-header {
   font-size: 3rem;
   font-weight: bold;
@@ -148,4 +115,20 @@ pre[class*="language-"] {
   .logo-div {
     margin-top: 20px;
   }
+}
+
+.devicon-linkedin-plain,
+.devicon-github-original {
+  font-size: 2rem;
+  transition: 0.3s ease-in-out;
+}
+
+.devicon-linkedin-plain:hover,
+.devicon-github-original:hover {
+  color: gray;
+}
+
+.link-anchor {
+  color: white;
+  text-decoration: none;
 }
