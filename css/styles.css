@@ -35,7 +35,7 @@ a {
 }
 
 .accordion-button {
-  background-color: var(--white-color);
+  background-color: white;
   outline-style: solid;
   outline-width: 1px;
   outline-color: var(--dark-color);
@@ -131,4 +131,32 @@ pre[class*="language-"] {
 .link-anchor {
   color: white;
   text-decoration: none;
+}
+
+.checkmark-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.checkmark-list li {
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 10px;
+}
+
+.checkmark-list li::before {
+  content: "\2713";
+  color: #7cfc00;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.app-logo {
+  max-width: 400px;
+  max-height: 400px;
+  width: 100%;
+  height: auto;
 }
